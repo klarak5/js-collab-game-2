@@ -8,6 +8,8 @@ const pokoje = [
   { id: 5, nazwa: "Wyjscie" },
 ];
 
+// jakis pokoj z innym bezpiecznikiem ,jeden jest chujowy i jak tylko go zbierzesz to ci jebnie i jest drugi lepszy ale jak ci jebnie to zeby wygrac musisz tam jakiegos energetyka czy cos znalezcz zeby ci energeti starzczylo type shit
+
 function stanPoczatkowy() {
   return {
     pokoj: 1,
