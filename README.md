@@ -1,6 +1,6 @@
 # Ucieczka z serwerowni
 
-Dostepne komendy: start(), pomoc(), status(), mapa(), rozejrzyj(), wykonaj("lewo") wykonaj("prawo"), wykonaj("karta"), wykonaj("bezpiecznik"), wykonaj("napraw"), wykonaj("klucz"), wykonaj("wyjdz")
+Dostepne komendy: gra.start(), gra.pomoc(), gra.status(), gra.mapa(), gra.rozejrzyj(), gra.wykonaj("lewo"), gra.wykonaj("prawo"), gra.wykonaj("karta"), gra.wykonaj("bezpiecznik"), gra.wykonaj("napraw"), gra.wykonaj("klucz"), gra.wykonaj("wyjdz")
 
 Aby wygrac musisz:
 

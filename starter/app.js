@@ -25,10 +25,10 @@ function wykonaj(komenda) {
 
 function pomoc() {
   console.log(
-    'Dostepne komendy bez kosztu: start(), pomoc(), status(), mapa(), rozejrzyj()")',
+    'Dostepne komendy bez kosztu: gra.start(), gra.pomoc(), gra.status(), gra.mapa(), gra.rozejrzyj()")',
   );
   console.log(
-    'Dostepne komendy z kosztem: wykonaj("lewo") wykonaj("prawo"), wykonaj("karta"), wykonaj("bezpiecznik"), wykonaj("napraw"), wykonaj("klucz"), wykonaj("wyjdz")',
+    'Dostepne komendy z kosztem: gra.wykonaj("lewo"), gra.wykonaj("prawo"), gra.wykonaj("karta"), gra.wykonaj("bezpiecznik"), gra.wykonaj("napraw"), gra.wykonaj("klucz"), gra.wykonaj("wyjdz")',
   );
   console.log("Kazdy udany ruch i wykonana akcja kosztuja dokladnie 1 energie");
   console.log(
@@ -126,4 +126,71 @@ function rozejrzyj() {
   }
 }
 
+function importuj(tekst) {
+  let pakiet;
+
+  try {
+    pakiet = JSON.parse(str);
+  } catch (e) {
+    return "Pakiet musi byc obiektem JSON";
+  }
+
+  if (pakiet === null || typeof pakiet !== "object" || Array.isArray(pakiet)) {
+    return "Blad importu: pakiet musi byc obiektem JSON.";
+  }
+
+  if (pakiet.wersja !== 1) {
+    return "Blad importu: nieobslugiwana wersja zapisu.";
+  }
+
+  if (!czyStan(pakiet.stan)) {
+    return "Blad importu: stan gry jest niepoprawny.";
+  }
+
+  const p = pakiet.stan;
+
+  const nowyStan = {
+    pokoj: p.pokoj,
+    energia: p.energia,
+    karta: p.karta,
+    bezpiecznik: p.bezpiecznik,
+    zasilanie: p.zasilanie,
+    klucz: p.klucz,
+    koniec: p.koniec,
+    wygrana: p.wygrana,
+  };
+
+  stan = nowyStan;
+
+  return "Wczytano zapis gry";
+}
+
+function eksportuj() {
+  return JSON.stringify(
+    {
+      wersja: 1,
+      stan: {
+        pokoj: stan.pokoj,
+        energia: stan.energia,
+        karta: stan.karta,
+        bezpiecznik: stan.bezpiecznik,
+        zasilanie: stan.zasilanie,
+        koniec: stan.koniec,
+        wygrana: stan.wygrana,
+      },
+    },
+    null,
+    2,
+  );
+}
+
 start();
+
+window.gra = {
+  wykonaj: wykonaj,
+  status: status,
+  mapa: mapa,
+  rozejrzyj: rozejrzyj,
+  pomoc: pomoc,
+  start: start,
+};

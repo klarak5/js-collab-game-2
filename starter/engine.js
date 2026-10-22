@@ -180,3 +180,42 @@ function przejscie(stanPrzed, komenda) {
       return { stan: { ...stanPrzed }, komunikat: "Nieznana komenda" };
   }
 }
+
+function czyStan(wartosc) {
+  if (
+    wartosc === null ||
+    typeof wartosc !== "object" ||
+    Array.isArray(wartosc)
+  ) {
+    return false;
+  }
+  if (!Number.isInteger(wartosc.pokoj) || !znajdzPokoj(wartosc.pokoj)) {
+    return false;
+  }
+  if (
+    !Number.isInteger(wartosc.energia) ||
+    wartosc.energia < 0 ||
+    wartosc.energia > MAKS_ENERGIA
+  ) {
+    return false;
+  }
+  const flagi = ["karta", "bezpiecznik", "zasilanie", "koniec", "wygrana"];
+  for (const pole of flagi) {
+    if (typeof wartosc[pole] !== "boolean") {
+      return false;
+    }
+  }
+  if (wartosc.bezpiecznik && wartosc.zasilanie) {
+    return false;
+  }
+  if (
+    wartosc.wygrana &&
+    !(wartosc.pokoj === 4 && wartosc.karta && wartosc.zasilanie)
+  ) {
+    return false;
+  }
+  if (wartosc.koniec !== (wartosc.wygrana || wartosc.energia === 0)) {
+    return false;
+  }
+  return true;
+}
