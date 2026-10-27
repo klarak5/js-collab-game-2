@@ -28,7 +28,7 @@ function pomoc() {
     'Dostepne komendy bez kosztu: gra.start(), gra.pomoc(), gra.status(), gra.mapa(), gra.rozejrzyj()")',
   );
   console.log(
-    'Dostepne komendy z kosztem: gra.wykonaj("lewo"), gra.wykonaj("prawo"), gra.wykonaj("karta"), gra.wykonaj("bezpiecznik"), gra.wykonaj("napraw"), gra.wykonaj("klucz"), gra.wykonaj("wyjdz")',
+    'Dostepne komendy z kosztem: gra.wykonaj("lewo"), gra.wykonaj("prawo"), gra.wykonaj("karta"), gra.wykonaj("bezpiecznik"), gra.wykonaj("napraw"), gray.wykonaj("otworz"), gra.wykonaj("klucz"), gra.wykonaj("wyjdz")',
   );
   console.log("Kazdy udany ruch i wykonana akcja kosztuja dokladnie 1 energie");
   console.log(
@@ -80,8 +80,8 @@ function mapa() {
 function rozejrzyj() {
   switch (stan.pokoj) {
     case 1: {
-      if (stan.karta == false) {
-        return "Karta lezy na biurku";
+      if (stan.klucz == false) {
+        return "Klucz lezy na biurku";
       } else {
         return "Nic ciekawego";
       }
@@ -107,10 +107,10 @@ function rozejrzyj() {
       break;
     }
     case 4: {
-      if (stan.klucz) {
+      if (stan.karta) {
         return "Nic ciekawego";
       } else {
-        return "Na biurku lezy klucz";
+        return "Na biurku lezy karta";
       }
 
       break;

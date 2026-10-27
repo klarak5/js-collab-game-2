@@ -8,8 +8,6 @@ const pokoje = [
   { id: 5, nazwa: "Wyjscie" },
 ];
 
-// jakis pokoj z innym bezpiecznikiem ,jeden jest chujowy i jak tylko go zbierzesz to ci jebnie i jest drugi lepszy ale jak ci jebnie to zeby wygrac musisz tam jakiegos energetyka czy cos znalezcz zeby ci energeti starzczylo type shit
-
 function stanPoczatkowy() {
   return {
     pokoj: 1,
@@ -18,6 +16,7 @@ function stanPoczatkowy() {
     bezpiecznik: false,
     zasilanie: false,
     klucz: false,
+    czyOtwarte: false,
     koniec: false,
     wygrana: false,
   };
@@ -30,6 +29,12 @@ function przejscie(stanPrzed, komenda) {
         return {
           stan: { ...stanPrzed },
           komunikat: "Nie mozesz wejsc w sciane",
+        };
+      }
+      if((stanPrzed.pokoj===3) && (stanPrzed.czyOtwarte===false)){
+        return {
+          stan: { ...stanPrzed },
+          komunikat: "Przed toba sa zamkniete drzwi. Aby przejsc dalej, musisz je otworzyc kluczem.",
         };
       }
       return {
@@ -57,16 +62,16 @@ function przejscie(stanPrzed, komenda) {
         komunikat: "Przechodzisz do nastepnego pokoju",
       };
       break;
-    case "karta": {
-      if (stanPrzed.pokoj === 1 && stanPrzed.karta === false) {
+    case "klucz": {
+      if (stanPrzed.pokoj === 1 && stanPrzed.klucz === false) {
         return {
-          stan: { ...stanPrzed, energia: stanPrzed.energia - 1, karta: true },
-          komunikat: "Zabierasz karte",
+          stan: { ...stanPrzed, energia: stanPrzed.energia - 1, klucz: true },
+          komunikat: "Zabierasz klucz",
         };
       } else {
         return {
           stan: { ...stanPrzed },
-          komunikat: "Tutaj nie ma karty do zebrania",
+          komunikat: "Tutaj nie ma klucza do zebrania",
         };
       }
 
@@ -126,16 +131,38 @@ function przejscie(stanPrzed, komenda) {
 
       break;
     }
-    case "klucz": {
-      if (stanPrzed.pokoj === 4 && stanPrzed.klucz === false) {
+    case "otworz":{
+      if (stanPrzed.pokoj === 3 && stanPrzed.czyOtwarte===false && stanPrzed.klucz===true) {
         return {
-          stan: { ...stanPrzed, energia: stanPrzed.energia - 1, klucz: true },
-          komunikat: "Zabierasz klucz",
+          stan: { ...stanPrzed, energia: stanPrzed.energia - 1, klucz: false, czyOtwarte: true },
+          komunikat: "Otwierasz drzwi. Mozesz teraz przejsc do nastepnego pokoju",
+        };
+      }
+      else if(stanPrzed.klucz===false){
+        return {
+          stan: { ...stanPrzed },
+          komunikat: "Nie masz klucza",
+        };
+      }
+      else {
+        return {
+          stan: { ...stanPrzed },
+          komunikat: "Tutaj nie ma drzwi do otworzenia",
+        };
+      }
+
+      break;
+    }
+    case "karta": {
+      if (stanPrzed.pokoj === 4 && stanPrzed.karta === false) {
+        return {
+          stan: { ...stanPrzed, energia: stanPrzed.energia - 1, karta: true },
+          komunikat: "Zabierasz karte",
         };
       } else {
         return {
           stan: { ...stanPrzed },
-          komunikat: "Tutaj nie ma klucza do zebrania",
+          komunikat: "Tutaj nie ma karty do zebrania",
         };
       }
 
@@ -145,8 +172,7 @@ function przejscie(stanPrzed, komenda) {
       if (
         stanPrzed.pokoj === 5 &&
         stanPrzed.karta === true &&
-        stanPrzed.zasilanie === true &&
-        stanPrzed.klucz === true
+        stanPrzed.zasilanie === true
       ) {
         return {
           stan: {
@@ -164,15 +190,10 @@ function przejscie(stanPrzed, komenda) {
         };
       } else if (stanPrzed.karta === false) {
         return { stan: { ...stanPrzed }, komunikat: "Nie masz karty" };
-      } else if (zasilanie === false) {
-        return {
-          stan: { ...stanPrzed },
-          komunikat: "Zasilanie nie zostalo naprawione",
-        };
       } else {
         return {
           stan: { ...stanPrzed },
-          komunikat: "Nie masz klucza",
+          komunikat: "Zasilanie nie zostalo naprawione",
         };
       }
 
